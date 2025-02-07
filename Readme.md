@@ -58,6 +58,9 @@ The servers will start running at `http://localhost:3000`.
 #### Get All Shops
 Retrieves a list of all shops with their names and FSSAI numbers.
 
+
+
+
 ```bash
 GET /api/shops
 ```
@@ -73,16 +76,6 @@ GET /api/shops
 ]
 ```
 
-#### Update Shop Image
-Upload or update a shop's image by its ID.
-
-```bash
-POST /api/shops/:id
-```
-
-##### Parameters
-- `id`: Shop ID (in URL)
-- `image`: Image file (form-data)
 
 ### Package Delivery API
 
@@ -150,9 +143,64 @@ POST /api/package-settings
   }
 }
 ```
+#### Create Product
+Create a new product with images and details.
 
+ 
+```bash
+POST /api/products
+```
 
+##### Request Body (form-data)
+- `name` (Text): Product name
+- `description` (Text): Product description
+- `foodPreference` (Text): One of ['Vegetarian', 'Non-Vegetarian', 'Vegan', 'Contains Egg']
+- `inStock` (Text): "true" or "false"
+- `servingSize` (Text): e.g., "250g"
+- `servingPerContainer` (Text): Number of servings
+- `preparationTime` (Text): Time in minutes
+- `notes` (Text): Additional notes
+- `images` (File): Up to 5 image files
 
+##### Example using Postman
+1. Create a new POST request to `http://localhost:3000/api/products`
+2. Set request type to "form-data"
+3. Add the following key-value pairs:
+```
+name: "Chicken Biryani"
+description: "Authentic Hyderabadi Biryani"
+foodPreference: "Non-Vegetarian"
+inStock: "true"
+servingSize: "250g"
+servingPerContainer: "2"
+preparationTime: "30"
+notes: "Spicy dish"
+images: [Select files] (Type: File)
+```
+
+##### Response
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "65c3d8f12a8f4b2b3c4d5e6f",
+    "name": "Chicken Biryani",
+    "description": "Authentic Hyderabadi Biryani",
+    "images": [
+      "/uploads/1707492301234-image1.png"
+    ],
+    "inStock": true,
+    "foodPreference": "Non-Vegetarian",
+    "servingInformation": {
+      "servingSize": "250g",
+      "servingPerContainer": 2,
+      "preparationTime": 30
+    },
+    "notes": "Spicy dish",
+    "createdAt": "2025-02-07T10:30:00.000Z"
+  }
+}
+```
 
 
 ## 🔧 Configuration
@@ -184,6 +232,7 @@ Error responses include a message explaining the error:
 Harshan_Backend/
 ├── Manage_Shops.js     # Shop management API
 ├── Package_Settings.js # Package delivery API
+├── Product.js # Product delivery API
 ├── uploads/           # Directory for stored images
 └── README.md        # Documentation
 ```
